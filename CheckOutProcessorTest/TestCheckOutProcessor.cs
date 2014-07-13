@@ -16,7 +16,9 @@ namespace CheckOutProcessorTest
         {
             var classUnderTest = new CheckOutProcessor.CheckOutProcessor();
             var total = classUnderTest.CheckOut("A", 50);
-          Assert.AreEqual(total,50);
+            Assert.AreEqual(50, total);
+          total = classUnderTest.CheckOut("B", 60);
+          Assert.AreEqual(110, total);
         }
     }
 }
