@@ -12,45 +12,22 @@ namespace CheckOutProcessorTest
     {
 
 
-        [Test]
-        public void Test_Add_OfferData_To_Store_Returns_Applicable_Offer()
+        [TestCase ("A" ,3,3, 20,20) ]
+        [TestCase ("A" ,3,2, 20,0) ]
+        [TestCase ("A" ,3,6, 20,40) ]
+        public void Test_Add_OfferData_To_Store_Returns_Applicable_Offer(string skuId,int eligibileCount,int acualCount,decimal offer,decimal expectedOffer)
         {
             var classUnderTest = new CheckOutProcessor.OfferStore();
             classUnderTest.Add(new OfferData
                 {
-                    SkuId = "A",
-                    OfferEligibiltyCount = 3,
-                    OfferAmount = 20
+                    SkuId = skuId,
+                    OfferEligibiltyCount = eligibileCount,
+                    OfferAmount = offer
                 });
-            Assert.AreEqual(20,classUnderTest.GetOfferAmount("A",3));
+            Assert.AreEqual(expectedOffer,classUnderTest.GetOfferAmount(skuId,acualCount));
         }
 
-        [Test]
-        public void Test_OfferStore_Not_Apply_If_EligiblityCountNotPassed()
-        {
-            var classUnderTest = new CheckOutProcessor.OfferStore();
-            classUnderTest.Add(new OfferData
-            {
-                SkuId = "A",
-                OfferEligibiltyCount = 3,
-                OfferAmount = 20
-            });
-            Assert.AreEqual(0, classUnderTest.GetOfferAmount("A", 2));
-        }
-
-
-        [Test]
-        public void Test_Add_OfferData_To_Store_Returns_Applicable_Offer_If_MuliplesOf_Eligible_Count_Passed()
-        {
-            var classUnderTest = new CheckOutProcessor.OfferStore();
-            classUnderTest.Add(new OfferData
-            {
-                SkuId = "A",
-                OfferEligibiltyCount = 3,
-                OfferAmount = 20
-            });
-            Assert.AreEqual(40, classUnderTest.GetOfferAmount("A", 6));
-        }
+     
 
     }
 }
