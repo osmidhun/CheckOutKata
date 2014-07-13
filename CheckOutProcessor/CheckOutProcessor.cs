@@ -2,6 +2,7 @@
 {
     public class CheckOutProcessor
     {
+        private int CountB;
         public CheckOutProcessor()
         {
             Total = 0;
@@ -16,6 +17,14 @@
                 if (Count == 3)
                 {
                     Total -= 20;
+                }
+            }
+            if (skuId == "B")
+            {
+                CountB += 1;
+                if (CountB == 2)
+                {
+                    Total -= 15;
                 }
             }
             Total += price;
