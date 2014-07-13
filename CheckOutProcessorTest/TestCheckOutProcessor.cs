@@ -64,6 +64,25 @@ namespace CheckOutProcessorTest
             Assert.AreEqual(175, total);
            
         }
+        [Test]
+        public void Test_Mix_With_SpecialOffer_And_Non_Offers()
+        {
+            var classUnderTest = new CheckOutProcessor.CheckOutProcessor();
+            var total = classUnderTest.CheckOut("A", 50);
+            Assert.AreEqual(50, total);
+            total = classUnderTest.CheckOut("A", 50);
+            Assert.AreEqual(100, total);
+            total = classUnderTest.CheckOut("A", 50);
+            Assert.AreEqual(130, total);
+            total = classUnderTest.CheckOut("B", 30);
+            Assert.AreEqual(160, total);
+            total = classUnderTest.CheckOut("B", 30);
+            Assert.AreEqual(175, total);
+            total = classUnderTest.CheckOut("C", 60);
+            Assert.AreEqual(235, total);
+            total = classUnderTest.CheckOut("D", 99);
+            Assert.AreEqual(334, total);
+        }
     }
 }
 

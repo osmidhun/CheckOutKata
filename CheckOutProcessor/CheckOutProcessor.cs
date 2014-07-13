@@ -2,27 +2,30 @@
 {
     public class CheckOutProcessor
     {
-        private int CountB;
+        private int _countB;
+        private int _countA;
+
         public CheckOutProcessor()
         {
             Total = 0;
-            Count = 0;
+            _countA = 0;
+            _countB = 0;
         }
 
         public decimal CheckOut(string skuId, decimal price)
         {
             if (skuId=="A")
             {
-                Count += 1;
-                if (Count == 3)
+                _countA += 1;
+                if (_countA == 3)
                 {
                     Total -= 20;
                 }
             }
             if (skuId == "B")
             {
-                CountB += 1;
-                if (CountB == 2)
+                _countB += 1;
+                if (_countB == 2)
                 {
                     Total -= 15;
                 }
@@ -31,7 +34,8 @@
           
             return Total;
         }
-        protected int Count { get; set; }
+        
+
         protected decimal Total { get; set; }
     }
 }
