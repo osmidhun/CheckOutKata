@@ -34,7 +34,36 @@ namespace CheckOutProcessorTest
             total = classUnderTest.CheckOut("A", 50);
             Assert.AreEqual(130, total);
         }
+        [Test]
+        public void Test_SpecialOffer_When_Tree_Times_SKU_A_CheckedOut_20_Offer_Even_OtherSKU_On_CheckOut()
+        {
+            var classUnderTest = new CheckOutProcessor.CheckOutProcessor();
+            var total = classUnderTest.CheckOut("A", 50);
+            Assert.AreEqual(50, total);
+            total = classUnderTest.CheckOut("A", 50);
+            Assert.AreEqual(100, total);
+            total = classUnderTest.CheckOut("B", 20);
+            Assert.AreEqual(120, total);
+            total = classUnderTest.CheckOut("A", 50);
+            Assert.AreEqual(150, total);
+        }
 
+        [Test]
+        public void Test_SpecialOffer_For_SKU_A_3_For_20_Off_And_SKU_B_2_For15_Off()
+        {
+            var classUnderTest = new CheckOutProcessor.CheckOutProcessor();
+            var total = classUnderTest.CheckOut("A", 50);
+            Assert.AreEqual(50, total);
+            total = classUnderTest.CheckOut("A", 50);
+            Assert.AreEqual(100, total);
+            total = classUnderTest.CheckOut("A", 50);
+            Assert.AreEqual(130, total);
+             total = classUnderTest.CheckOut("B", 30);
+            Assert.AreEqual(160, total);
+            total = classUnderTest.CheckOut("B", 30);
+            Assert.AreEqual(175, total);
+           
+        }
     }
 }
 
