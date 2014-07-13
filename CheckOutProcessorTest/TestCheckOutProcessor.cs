@@ -2,85 +2,93 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using CheckOutProcessor;
 using NUnit.Framework;
+
 
 namespace CheckOutProcessorTest
 {
     [TestFixture]
     public class TestCheckOutProcessor
     {
+        public CheckOutProcess ClassUnderTest { get; set; }
+
   
+        [SetUp]
+        public void SetUp()
+        {
+            var offerStore = new OfferStore();
+            offerStore.Add(new OfferData
+                {
+                    SkuId = "A",
+                    OfferEligibiltyCount = 3,
+                    OfferAmount = 20
+                     
+                    
+                });
+            offerStore.Add(new OfferData
+            {
+                SkuId = "B",
+                OfferEligibiltyCount = 2,
+                OfferAmount = 15
 
-        [Test]
-        public void Test_CheckOut_Method_Returns_Total_Of_SKU()
-        {
-            var classUnderTest = new CheckOutProcessor.CheckOutProcessor();
-            var total = classUnderTest.CheckOut("A", 50);
-            Assert.AreEqual(50, total);
-          total = classUnderTest.CheckOut("B", 60);
-          Assert.AreEqual(110, total);
-          total = classUnderTest.CheckOut("C", 10);
-          Assert.AreEqual(120, total);
+
+            });
+            ClassUnderTest = new CheckOutProcess(offerStore);
         }
 
-        [Test]
-        public void Test_SpecialOffer_When_Tree_Times_SKU_A_CheckedOut_20_Offer()
+        [TestCase("A",50,1,50)]
+        [TestCase("A",50,2,100)]
+        [TestCase("A",50,3,130)]
+        [TestCase("B",30,1,30)]
+        [TestCase("B",30,2,45)]
+        [TestCase("C",60,1,60)]
+        [TestCase("D",99,1,99)]
+        public void Test_CheckOut_Method_Returns_Total_Of_SKU(string skuId,decimal price, int quantity,decimal totalExpectedPrice)
         {
-            var classUnderTest = new CheckOutProcessor.CheckOutProcessor();
-            var total = classUnderTest.CheckOut("A", 50);
-            Assert.AreEqual(50, total);
-            total = classUnderTest.CheckOut("A", 50);
-            Assert.AreEqual(100, total);
-            total = classUnderTest.CheckOut("A", 50);
-            Assert.AreEqual(130, total);
+            decimal total = 0;
+           
+            for (int i = 0; i < quantity; i++)
+            {
+                 total = ClassUnderTest.CheckOut(skuId, price);
+            }
+
+            Assert.AreEqual(totalExpectedPrice, total);
         }
-        [Test]
-        public void Test_SpecialOffer_When_Tree_Times_SKU_A_CheckedOut_20_Offer_Even_OtherSKU_On_CheckOut()
-        {
-            var classUnderTest = new CheckOutProcessor.CheckOutProcessor();
-            var total = classUnderTest.CheckOut("A", 50);
-            Assert.AreEqual(50, total);
-            total = classUnderTest.CheckOut("A", 50);
-            Assert.AreEqual(100, total);
-            total = classUnderTest.CheckOut("B", 20);
-            Assert.AreEqual(120, total);
-            total = classUnderTest.CheckOut("A", 50);
-            Assert.AreEqual(150, total);
-        }
+
 
         [Test]
         public void Test_SpecialOffer_For_SKU_A_3_For_20_Off_And_SKU_B_2_For15_Off()
         {
-            var classUnderTest = new CheckOutProcessor.CheckOutProcessor();
-            var total = classUnderTest.CheckOut("A", 50);
+            var total = ClassUnderTest.CheckOut("A", 50);
             Assert.AreEqual(50, total);
-            total = classUnderTest.CheckOut("A", 50);
+            total = ClassUnderTest.CheckOut("A", 50);
             Assert.AreEqual(100, total);
-            total = classUnderTest.CheckOut("A", 50);
+            total = ClassUnderTest.CheckOut("A", 50);
             Assert.AreEqual(130, total);
-             total = classUnderTest.CheckOut("B", 30);
+            total = ClassUnderTest.CheckOut("B", 30);
             Assert.AreEqual(160, total);
-            total = classUnderTest.CheckOut("B", 30);
+            total = ClassUnderTest.CheckOut("B", 30);
             Assert.AreEqual(175, total);
            
         }
         [Test]
         public void Test_Mix_With_SpecialOffer_And_Non_Offers()
         {
-            var classUnderTest = new CheckOutProcessor.CheckOutProcessor();
-            var total = classUnderTest.CheckOut("A", 50);
+
+            var total = ClassUnderTest.CheckOut("A", 50);
             Assert.AreEqual(50, total);
-            total = classUnderTest.CheckOut("A", 50);
+            total = ClassUnderTest.CheckOut("A", 50);
             Assert.AreEqual(100, total);
-            total = classUnderTest.CheckOut("A", 50);
+            total = ClassUnderTest.CheckOut("A", 50);
             Assert.AreEqual(130, total);
-            total = classUnderTest.CheckOut("B", 30);
+            total = ClassUnderTest.CheckOut("B", 30);
             Assert.AreEqual(160, total);
-            total = classUnderTest.CheckOut("B", 30);
+            total = ClassUnderTest.CheckOut("B", 30);
             Assert.AreEqual(175, total);
-            total = classUnderTest.CheckOut("C", 60);
+            total = ClassUnderTest.CheckOut("C", 60);
             Assert.AreEqual(235, total);
-            total = classUnderTest.CheckOut("D", 99);
+            total = ClassUnderTest.CheckOut("D", 99);
             Assert.AreEqual(334, total);
         }
     }

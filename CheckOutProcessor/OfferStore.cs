@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CheckOutProcessor
 {
-    public class OfferStore
+    public class OfferStore : IOfferStore
     {
 
         private readonly Dictionary<string, OfferData> _store;

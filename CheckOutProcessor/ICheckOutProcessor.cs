@@ -1,6 +1,6 @@
 ﻿namespace CheckOutProcessor
 {
-    public interface ICheckOutProcessor
+    public interface ICheckOutProcess
     {
         decimal CheckOut(string skuId, decimal price);
     }

@@ -1,43 +1,41 @@
-﻿namespace CheckOutProcessor
-{
-    public class CheckOutProcessor : ICheckOutProcessor
-    {
-        private int _countB;
-        private int _countA;
+﻿using System.Collections.Generic;
 
-        public CheckOutProcessor()
+namespace CheckOutProcessor
+{
+    public class CheckOutProcess : ICheckOutProcess
+    {
+        private readonly IOfferStore _store;
+        
+        private readonly Dictionary<string, int> _checkOutCounter;
+
+        public CheckOutProcess(IOfferStore store)
         {
+            _store = store;
+
+            
+            _checkOutCounter=new Dictionary<string, int>();
             Total = 0;
-            _countA = 0;
-            _countB = 0;
+            
         }
 
         public decimal CheckOut(string skuId, decimal price)
         {
-            if (skuId=="A")
+            if (_checkOutCounter.ContainsKey(skuId))
             {
-                _countA += 1;
-                if (_countA == 3)
-                {
-                    Total -= 20;
-                }
+                _checkOutCounter[skuId] += 1;
             }
-            if (skuId == "B")
+            else
             {
-                _countB += 1;
-                if (_countB == 2)
-                {
-                    Total -= 15;
-                }
+                _checkOutCounter.Add(skuId,1);
             }
             Total += price;
-          
+            Total -= _store.GetOfferAmount(skuId, _checkOutCounter[skuId]);
             return Total;
         }
-        
 
-        protected decimal Total { get; set; }
+
+        protected decimal Total { get;private set; }
     }
 
-  
+
 }
