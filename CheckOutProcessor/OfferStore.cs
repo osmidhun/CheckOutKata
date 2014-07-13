@@ -23,6 +23,11 @@ namespace CheckOutProcessor
 
       public decimal GetOfferAmount(string skuId, int count)
       {
+          OfferData offerData;
+          if (_store.TryGetValue(skuId, out offerData) && count == offerData.OfferEligibiltyCount)
+          {
+              return offerData.OfferAmount;
+          }
          
           return 0;
       }
