@@ -40,6 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckOutProcessor.cs" />
+    <Compile Include="ICheckOutProcessor.cs" />
+    <Compile Include="OfferData.cs" />
+    <Compile Include="OfferStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

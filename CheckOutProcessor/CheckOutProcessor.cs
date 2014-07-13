@@ -1,6 +1,6 @@
 ﻿namespace CheckOutProcessor
 {
-    public class CheckOutProcessor
+    public class CheckOutProcessor : ICheckOutProcessor
     {
         private int _countB;
         private int _countA;
@@ -38,4 +38,6 @@
 
         protected decimal Total { get; set; }
     }
+
+  
 }
