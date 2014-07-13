@@ -6,31 +6,37 @@ using System.Threading.Tasks;
 
 namespace CheckOutProcessor
 {
-  public  class OfferStore
-  {
+    public class OfferStore
+    {
 
-      private readonly Dictionary<string, OfferData> _store;
+        private readonly Dictionary<string, OfferData> _store;
 
-      public OfferStore()
-      {
-          _store=new Dictionary<string, OfferData>();
-      }
+        public OfferStore()
+        {
+            _store = new Dictionary<string, OfferData>();
+        }
 
-      public void Add(OfferData data)
-      {
-          _store.Add(data.SkuId, data);
-      }
+        public void Add(OfferData data)
+        {
+            _store.Add(data.SkuId, data);
+        }
 
-      public decimal GetOfferAmount(string skuId, int count)
-      {
-          OfferData offerData;
-          if (_store.TryGetValue(skuId, out offerData) && count == offerData.OfferEligibiltyCount)
-          {
-              return offerData.OfferAmount;
-          }
-         
-          return 0;
-      }
+        public decimal GetOfferAmount(string skuId, int count)
+        {
+            OfferData offerData;
+            if (_store.TryGetValue(skuId, out offerData))
+            {
+                var result = 0;
+                var reminder = 0;
+                result = Math.DivRem(count, offerData.OfferEligibiltyCount, out reminder);
+                if (reminder == 0)
+                {
+                    return offerData.OfferAmount * result;
+                }
+            }
 
-  }
+            return 0;
+        }
+
+    }
 }
